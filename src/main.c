@@ -1,7 +1,7 @@
 #include <zephyr/kernel.h>
 #include "thread_1.h"
 #include "thread_2.h"
-#include "semh.h"
+#include "mutexh.h"
 #include "msgq.h"
 
 
@@ -22,7 +22,7 @@ int main()
     //                                      NULL, NULL, NULL,
     //                                      PRIORITY, 0, K_NO_WAIT);
 
-    k_sem_init(&my_sem, 0, 1); //exported via extern semh.h
+    k_mutex_init(&my_mutex); //exported via extern semh.h
     k_msgq_init(&my_msgq, my_msgq_buffer, sizeof(struct msg_t), SIZE);
 
 }

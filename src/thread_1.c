@@ -1,4 +1,5 @@
 #include "zephyr/kernel.h"
+#include "semh.h"
 #include "thread_1.h"
 #include "msgq.h"
 
@@ -13,11 +14,19 @@ void thread1_callback(void)
 
         struct msg_t data = {1}; 
 
-        while(k_msgq_put(&my_msgq, &data, K_NO_WAIT) != 0) {
-            k_msgq_purge(&my_msgq);
+        if (k_sem_take(&my_sem, K_MSEC(50)) != 0){
+            printk("Input data not available!");
+        } else {
+            printk("Was able to obtain semaphore (I am here)");
+            while (k_msgq_put(&my_msgq, &data, K_NO_WAIT) != 0)
+            {
+                k_msgq_purge(&my_msgq);
+            }
+            printf("I've sent you %d\n", data.num);
+            k_msleep(100);
         }
-        printf("I've sent you %d\n", data.num);
-        k_msleep(100);
+
 
 	}
 }
+

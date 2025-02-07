@@ -1,7 +1,4 @@
-#ifndef SEMH
-#define SEMH
+#include "zephyr/kernel.h"
 
 extern struct k_sem my_sem;
 
-
-#endif
